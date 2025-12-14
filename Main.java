@@ -20,6 +20,11 @@ public class Main {
 
         System.out.println("4. ТЕСТИРОВАНИЕ ИСКЛЮЧЕНИЙ:");
         testExceptions();
+
+        System.out.println("\n" + "=".repeat(60) + "\n");
+
+        System.out.println("5. ТЕСТИРОВАНИЕ ИНДЕКСА 0:");
+        testIndexZeroOperations();
     }
 
     // =================== ТЕСТИРОВАНИЕ ArrayTabulatedFunction ===================
@@ -52,25 +57,47 @@ public class Main {
             System.out.println(" Исходные точки:");
             printPoints(arrayFunc);
 
+            // Добавляем точку с индексом 0 (добавим в начало)
+            System.out.println(" Добавляем точку (-0.5, 0.25) в начало:");
+            try {
+                arrayFunc.addPoint(new FunctionPoint(-0.5, 0.25));
+                printPoints(arrayFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось добавить точку: " + e.getMessage());
+            }
+
+            // Изменяем точку с индексом 0
+            System.out.println(" Изменяем точку с индексом 0 на (-0.3, 0.09):");
+            try {
+                arrayFunc.setPoint(0, new FunctionPoint(-0.3, 0.09));
+                printPoints(arrayFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось изменить точку: " + e.getMessage());
+            }
+
+            // Удаляем точку с индексом 0
+            System.out.println(" Удаляем точку с индексом 0:");
+            try {
+                arrayFunc.deletePoint(0);
+                printPoints(arrayFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось удалить точку: " + e.getMessage());
+            }
+
             // Добавляем точку
             System.out.println(" Добавляем точку (1.5, 2.25):");
-            arrayFunc.addPoint(new FunctionPoint(1.5, 2.25));
-            printPoints(arrayFunc);
-
-            // Изменяем точку
-            System.out.println(" Изменяем точку с индексом 2 на (2.2, 4.84):");
-            arrayFunc.setPoint(2, new FunctionPoint(2.2, 4.84));
-            printPoints(arrayFunc);
-
-            // Удаляем точку
-            System.out.println(" Удаляем точку с индексом 1:");
-            arrayFunc.deletePoint(1);
-            printPoints(arrayFunc);
+            try {
+                arrayFunc.addPoint(new FunctionPoint(1.5, 2.25));
+                printPoints(arrayFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось добавить точку: " + e.getMessage());
+            }
 
             System.out.println("Все операции выполнены успешно");
 
         } catch (Exception e) {
             System.out.println("Ошибка: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -103,25 +130,47 @@ public class Main {
             System.out.println(" Исходные точки:");
             printPoints(listFunc);
 
+            // Добавляем точку с индексом 0 (добавим в начало)
+            System.out.println(" Добавляем точку (-0.5, -0.479) в начало:");
+            try {
+                listFunc.addPoint(new FunctionPoint(-0.5, -0.479));
+                printPoints(listFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось добавить точку: " + e.getMessage());
+            }
+
+            // Изменяем точку с индексом 0
+            System.out.println(" Изменяем точку с индексом 0 на (-0.3, -0.295):");
+            try {
+                listFunc.setPoint(0, new FunctionPoint(-0.3, -0.295));
+                printPoints(listFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось изменить точку: " + e.getMessage());
+            }
+
+            // Удаляем точку с индексом 0
+            System.out.println(" Удаляем точку с индексом 0:");
+            try {
+                listFunc.deletePoint(0);
+                printPoints(listFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось удалить точку: " + e.getMessage());
+            }
+
             // Добавляем точку
             System.out.println(" Добавляем точку (1.5, 0.997):");
-            listFunc.addPoint(new FunctionPoint(1.5, 0.997));
-            printPoints(listFunc);
-
-            // Изменяем точку
-            System.out.println(" Изменяем точку с индексом 2 на (2.2, 0.808):");
-            listFunc.setPoint(2, new FunctionPoint(2.2, 0.808));
-            printPoints(listFunc);
-
-            // Удаляем точку
-            System.out.println(" Удаляем точку с индексом 1:");
-            listFunc.deletePoint(1);
-            printPoints(listFunc);
+            try {
+                listFunc.addPoint(new FunctionPoint(1.5, 0.997));
+                printPoints(listFunc);
+            } catch (Exception e) {
+                System.out.println("Не удалось добавить точку: " + e.getMessage());
+            }
 
             System.out.println("Все операции выполнены успешно");
 
         } catch (Exception e) {
             System.out.println("Ошибка: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -170,6 +219,7 @@ public class Main {
 
         } catch (Exception e) {
             System.out.println("Ошибка при сравнении: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -263,10 +313,33 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
+
+        // Тестируем setPoint с неверным индексом
+        try {
+            TabulatedFunction func = new ArrayTabulatedFunction(0, 4, 3);
+            System.out.print(" Пытаемся setPoint с индексом -2... ");
+            func.setPoint(-2, new FunctionPoint(1, 1));
+            System.out.println("Не выброшено исключение!");
+        } catch (FunctionPointIndexOutOfBoundsException e) {
+            System.out.println("FunctionPointIndexOutOfBoundsException");
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
+        }
+
+        // Тестируем deletePoint с неверным индексом
+        try {
+            TabulatedFunction func = new LinkedListTabulatedFunction(0, 4, 3);
+            System.out.print(" Пытаемся deletePoint с индексом 10... ");
+            func.deletePoint(10);
+            System.out.println("Не выброшено исключение!");
+        } catch (FunctionPointIndexOutOfBoundsException e) {
+            System.out.println("FunctionPointIndexOutOfBoundsException");
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
+        }
     }
 
     private static void testOrderExceptions() {
-        System.out.println("\n3. Тест нарушения порядка точек (InappropriateFunctionPointException):");
 
         // Тест 1: Установка точки с нарушением порядка (слишком большой X)
         try {
@@ -277,6 +350,8 @@ public class Main {
             System.out.println("Не выброшено исключение!");
         } catch (InappropriateFunctionPointException e) {
             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
 
         // Тест 2: Изменение X точки с ТОЧНЫМ нарушением (равенство)
@@ -288,6 +363,8 @@ public class Main {
             System.out.println("Не выброшено исключение!");
         } catch (InappropriateFunctionPointException e) {
             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
 
         // Тест 3: Изменение X точки с ТОЧНЫМ нарушением (равенство следующей)
@@ -299,6 +376,8 @@ public class Main {
             System.out.println("Не выброшено исключение!");
         } catch (InappropriateFunctionPointException e) {
             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
 
         // Тест 4: Добавление точки с существующим X
@@ -309,6 +388,8 @@ public class Main {
             System.out.println("Не выброшено исключение!");
         } catch (InappropriateFunctionPointException e) {
             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
 
         // Тест 5: Добавление точки с ОЧЕНЬ близким X (проверка точности)
@@ -319,6 +400,8 @@ public class Main {
             System.out.println("Не выброшено исключение!");
         } catch (InappropriateFunctionPointException e) {
             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
 
         // Тест 6: Добавление точки с близким, но допустимым X
@@ -329,6 +412,8 @@ public class Main {
             System.out.println("Успешно добавлено");
         } catch (InappropriateFunctionPointException e) {
             System.out.println(e.getClass().getSimpleName() + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
         }
     }
 
@@ -359,14 +444,102 @@ public class Main {
         }
     }
 
+    // =================== ТЕСТИРОВАНИЕ ИНДЕКСА 0 ===================
+
+    private static void testIndexZeroOperations() {
+        System.out.println("Тестирование операций с индексом 0:\n");
+
+        // Тест 1: Установка точки с индексом 0
+        System.out.println("1. Установка точки с индексом 0:");
+        testSetPointAtZero();
+
+        // Тест 2: Удаление точки с индексом 0
+        System.out.println("\n2. Удаление точки с индексом 0:");
+        testDeletePointAtZero();
+
+        // Тест 3: Изменение X/Y точки с индексом 0
+        System.out.println("\n3. Изменение X/Y точки с индексом 0:");
+        testModifyPointAtZero();
+    }
+
+    private static void testSetPointAtZero() {
+        try {
+            TabulatedFunction func = new ArrayTabulatedFunction(0, 4, 3);
+            System.out.print(" Устанавливаем корректную точку (0.5, 1) на позицию 0... ");
+            func.setPoint(0, new FunctionPoint(0.5, 1));
+            System.out.println("Успешно!");
+        } catch (InappropriateFunctionPointException e) {
+            System.out.println("InappropriateFunctionPointException: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
+        }
+
+        try {
+            TabulatedFunction func = new LinkedListTabulatedFunction(0, 4, 3);
+            System.out.print(" Устанавливаем некорректную точку (2, 4) на позицию 0... ");
+            func.setPoint(0, new FunctionPoint(2, 4)); // 2 > 1.0 (X следующей точки)
+            System.out.println("Не выброшено исключение!");
+        } catch (InappropriateFunctionPointException e) {
+            System.out.println("InappropriateFunctionPointException: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
+        }
+    }
+
+    private static void testDeletePointAtZero() {
+        try {
+            TabulatedFunction func = new ArrayTabulatedFunction(0, 4, 5);
+            System.out.print(" Удаляем точку с индексом 0 из 5 точек... ");
+            func.deletePoint(0);
+            System.out.println("Успешно! Осталось " + func.getPointsCount() + " точек");
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+
+        try {
+            TabulatedFunction func = new LinkedListTabulatedFunction(0, 4, 5);
+            System.out.print(" Удаляем точку с индексом 0 из 5 точек... ");
+            func.deletePoint(0);
+            System.out.println("Успешно! Осталось " + func.getPointsCount() + " точек");
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+    }
+
+    private static void testModifyPointAtZero() {
+        try {
+            TabulatedFunction func = new ArrayTabulatedFunction(1, 5, 4);
+            System.out.print(" Изменяем X точки 0 с 1 на 1.5... ");
+            func.setPointX(0, 1.5);
+            System.out.println("Успешно! Новое X = " + func.getPointX(0));
+        } catch (InappropriateFunctionPointException e) {
+            System.out.println("InappropriateFunctionPointException: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Неожиданное исключение: " + e.getClass().getName());
+        }
+
+        try {
+            TabulatedFunction func = new LinkedListTabulatedFunction(1, 5, 4);
+            System.out.print(" Изменяем Y точки 0 на 100... ");
+            func.setPointY(0, 100);
+            System.out.println("Успешно! Новое Y = " + func.getPointY(0));
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
+    }
+
     // =================== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ===================
 
     private static void printPoints(TabulatedFunction func) {
-        System.out.print(" Точки: ");
-        for (int i = 0; i < func.getPointsCount(); i++) {
-            System.out.printf("[%.2f; %.3f] ", func.getPointX(i), func.getPointY(i));
+        try {
+            System.out.print(" Точки: ");
+            for (int i = 0; i < func.getPointsCount(); i++) {
+                System.out.printf("[%.2f; %.3f] ", func.getPointX(i), func.getPointY(i));
+            }
+            System.out.println();
+        } catch (Exception e) {
+            System.out.println("Ошибка при печати точек: " + e.getMessage());
         }
-        System.out.println();
     }
 
     private static void testBasicOperations(TabulatedFunction func) {
